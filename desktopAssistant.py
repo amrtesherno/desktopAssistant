@@ -95,7 +95,7 @@ def assistant(command):
         talkToMe('he is  a developer  he create amazing site and now he work to develop me to be his personal assistant')
 
     elif 'are you' in command:
-        talkToMe('Yes Amr told me that my name will be Naglaa')
+        talkToMe('Yes Amr told me that my name will be body')
     elif 'joke' in command:
         res = requests.get(
                 'https://icanhazdadjoke.com/',
