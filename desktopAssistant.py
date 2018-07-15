@@ -81,12 +81,12 @@ def assistant(command):
         talkToMe('hi')
 
     elif 'gym' in command:
-    	account_sid = "AC82310a5c62ab010073049c0c38eacd37"
-        auth_token  = "a347f87c86e3b20c2c6f3bbda0a285f0"
+    	account_sid = ""
+        auth_token  = ""
         client = Client(account_sid, auth_token)
         message = client.messages.create(
-            to="+2001143555614", 
-            from_="+16182198504",
+            to="+", 
+            from_="+",
             body="hi will go to gym to day")
         print(message.sid)
         talkToMe('yes you have to go to gym today at 5pm. and i will send text massage to your friend Ahmed ')
