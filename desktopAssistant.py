@@ -6,30 +6,37 @@ import webbrowser
 import smtplib
 import requests
 from weather import Weather
+from twilio.rest import Client
+
 
 def talkToMe(audio):
     "speaks audio passed as argument"
 
     print(audio)
-    for line in audio.splitlines():
-        os.system("say " + audio)
+    for line in audio.splitlines():  
+        tts = gTTS(text=audio, lang='en')
+        tts.save('audio.mp3')
+        os.system('mpg123 audio.mp3')
+#        os.system('say ' + audio)
 
-    #  use the system's inbuilt say command instead of mpg123
-    #  text_to_speech = gTTS(text=audio, lang='en')
-    #  text_to_speech.save('audio.mp3')
-    #  os.system('mpg123 audio.mp3')
+#    use the system's inbuilt say command instead of mpg123
+#        text_to_speech = gTTS(text=audio, lang='en')
+#        text_to_speech.save('audio.mp3')
+#        os.system('mpg123 audio.mp3')
 
-
+    
 def myCommand():
     "listens for commands"
 
     r = sr.Recognizer()
 
     with sr.Microphone() as source:
-        print('Ready...')
-        r.pause_threshold = 1
-        r.adjust_for_ambient_noise(source, duration=1)
+        r.adjust_for_ambient_noise(source)
+        print("Say something!")
         audio = r.listen(source)
+        print("Done listening!")
+    with open("microphone-results.wav", "wb") as f:
+        f.write(audio.get_wav_data())
 
     try:
         command = r.recognize_google(audio).lower()
@@ -67,6 +74,28 @@ def assistant(command):
 
     elif 'what\'s up' in command:
         talkToMe('Just doing my thing')
+
+    elif 'good morning' in command:
+        talkToMe('good morning Amr')
+    elif 'hi' in command:
+        talkToMe('hi')
+
+    elif 'gym' in command:
+    	account_sid = "AC82310a5c62ab010073049c0c38eacd37"
+        auth_token  = "a347f87c86e3b20c2c6f3bbda0a285f0"
+        client = Client(account_sid, auth_token)
+        message = client.messages.create(
+            to="+2001143555614", 
+            from_="+16182198504",
+            body="hi will go to gym to day")
+        print(message.sid)
+        talkToMe('yes you have to go to gym today at 5pm. and i will send text massage to your friend Ahmed ')
+        talkToMe('massage send')
+    elif 'who is ' in command:
+        talkToMe('he is  a developer  he create amazing site and now he work to develop me to be his personal assistant')
+
+    elif 'are you' in command:
+        talkToMe('Yes Amr told me that my name will be Naglaa')
     elif 'joke' in command:
         res = requests.get(
                 'https://icanhazdadjoke.com/',
@@ -116,7 +145,7 @@ def assistant(command):
             mail.starttls()
 
             #login
-            mail.login('username', 'password')
+            mail.login('amrtesherno', '442352442352')
 
             #send message
             mail.sendmail('John Fisher', 'JARVIS2.0@protonmail.com', content)
@@ -130,7 +159,7 @@ def assistant(command):
             talkToMe('I don\'t know what you mean!')
 
 
-talkToMe('I am ready for your command')
+talkToMe('hi Amr I am ready for your command ')
 
 #loop to continue executing multiple commands
 while True:
